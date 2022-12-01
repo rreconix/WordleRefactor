@@ -1,0 +1,128 @@
+@import "roots.css";
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap");
+@font-face {
+	font-family: "NYTFONT";
+	src: url(../fonts/karnakcondensed-normal-700.woff2);
+}
+
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body,
+html {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	background-color: var(--background);
+}
+
+header {
+	width: 100%;
+	height: var(--header-height);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 1.5rem;
+	border-bottom: 1px solid var(--border-color);
+}
+
+.title {
+	color: var(--text-color);
+	font-size: 2.25rem;
+	font-family: "NYTFONT";
+	letter-spacing: 0.01em;
+}
+
+.menu.right {
+	display: flex;
+	column-gap: 0.75rem;
+}
+
+@media (min-width: 415px) {
+	:root {
+		--header-height: 41px;
+	}
+}
+
+main {
+	width: 100%;
+	max-width: 500px;
+	height: calc(100% - var(--header-height));
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	overflow: hidden;
+}
+
+.grid{
+	width: 350px;
+	height: 420px;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 5px;
+	padding: 10px;
+}
+
+.keyboard {
+	height: 200px;
+	margin: 0 8px;
+}
+
+.keyboard > div {
+	display: flex;
+	width: 100%;
+	margin-bottom: 8px;
+	touch-action: manipulation;
+}
+
+.key {
+	height: 58px;
+	color: var(--text-color);
+	display: flex;
+	flex: 1;
+	font-size: clamp(0.5rem, -0.6428571428571428rem + 5.714285714285714vw, 1rem);
+	background-color: var(--key-bg);
+	justify-content: center;
+	align-items: center;
+	text-transform: uppercase;
+	border-radius: 4px;
+	font-family: "Source Sans Pro", sans-serif;
+	cursor: pointer;
+	border: none;
+	outline: 0;
+}
+
+.row .key:not(:last-of-type) {
+	margin-right: 6px;
+}
+
+.spacer {
+	flex: 0.5;
+}
+
+.double {
+	flex: 1.5;
+}
+
+main,
+.keyboard,
+.key {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
