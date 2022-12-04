@@ -1,5 +1,9 @@
 @import "roots.css";
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap");
+@font-face {
+	font-family: "SANSPRO";
+	src: url(../fonts/SourceSansPro-SemiBold.ttf);
+}
+
 @font-face {
 	font-family: "NYTFONT";
 	src: url(../fonts/karnakcondensed-normal-700.woff2);
@@ -10,6 +14,7 @@
 *::after {
 	margin: 0;
 	padding: 0;
+	font-family: "SANSPRO";
 	box-sizing: border-box;
 }
 
@@ -29,19 +34,42 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 0 1.5rem;
 	border-bottom: 1px solid var(--border-color);
+	padding: 0 1.5rem;
 }
 
 .title {
 	color: var(--text-color);
-	font-size: 2.25rem;
+	font-size: 2rem;
 	font-family: "NYTFONT";
 	letter-spacing: 0.01em;
+	flex: 1;
+}
+
+@media (min-width: 768px) {
+	.title {
+		text-align: center;
+		font-size: 2.25rem;
+	}
+	.menu{
+		width: 120px;
+	}
+	.menu svg{
+		height: 28px;
+		width: 28px;
+	}
+	.menu.left{
+		padding: 0;
+	}
+}
+
+.menu.left{
+	padding-right: 1rem;
 }
 
 .menu.right {
 	display: flex;
+	justify-content: flex-end;
 	column-gap: 0.75rem;
 }
 
@@ -52,12 +80,47 @@ header {
 }
 
 main {
-	width: 100%;
 	max-width: 500px;
 	height: calc(100% - var(--header-height));
 	margin: 0 auto;
+}
+
+main,
+.overlay {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
+}
+
+.modal-container {
+	position: absolute;
+	left: 50%;
+	top: 45px;
+	bottom: 0;
+	transform: translateX(-50%);
+
+	pointer-events: none;
+	width: fit-content;
+	z-index: 2;
+	overflow: hidden;
+}
+
+.modal-container .modal {
+	background-color: var(--text-color);
+	color: var(--inverse-text-color);
+	padding: 0.75rem;
+	margin: 1rem;
+	font-size: 14px;
+	border-radius: 4px;
+}
+.modal.fadingOut {
+	animation: fadeOut 300ms linear forwards;
+}
+
+@keyframes fadeOut {
+	100% {
+		opacity: 0;
+	}
 }
 
 .container {
@@ -65,16 +128,91 @@ main {
 	justify-content: center;
 	align-items: center;
 	flex-grow: 1;
-	overflow: hidden;
 }
 
-.grid{
+.grid {
 	width: 350px;
 	height: 420px;
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-rows: repeat(6, 1fr);
 	gap: 5px;
 	padding: 10px;
+}
+
+.grid > div {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 5px;
+}
+
+.grid > div.shake {
+	animation: shakeRow var(--shake-duration) linear;
+}
+
+@keyframes shakeRow {
+	10%,
+	90% {
+		transform: translateX(-1px);
+	}
+
+	20%,
+	80% {
+		transform: translateX(2px);
+	}
+
+	30%,
+	50%,
+	70% {
+		transform: translateX(-4px);
+	}
+
+	40%,
+	60% {
+		transform: translateX(4px);
+	}
+}
+
+.tile {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 2rem;
+	color: var(--text-color);
+	text-transform: uppercase;
+}
+
+.tile[data-state="correct"],
+.key[data-state="correct"] {
+	background-color: var(--color-correct);
+}
+
+.tile[data-state="present"],
+.key[data-state="present"] {
+	background-color: var(--color-present);
+}
+
+.tile[data-state="absent"],
+.key[data-state="absent"] {
+	background-color: var(--color-absent);
+}
+
+.tile[data-state="empty"] {
+	border: 2px solid var(--border-color);
+}
+
+.tile.flip {
+	animation: flip var(--flip-duration) linear 1;
+}
+
+@keyframes flip {
+	0%,
+	100% {
+		transform: rotateX(0);
+	}
+	50% {
+		transform: rotateX(-90deg);
+	}
 }
 
 .keyboard {
@@ -82,7 +220,7 @@ main {
 	margin: 0 8px;
 }
 
-.keyboard > div {
+.keyboard > .row {
 	display: flex;
 	width: 100%;
 	margin-bottom: 8px;
@@ -100,13 +238,12 @@ main {
 	align-items: center;
 	text-transform: uppercase;
 	border-radius: 4px;
-	font-family: "Source Sans Pro", sans-serif;
 	cursor: pointer;
 	border: none;
 	outline: 0;
 }
 
-.row .key:not(:last-of-type) {
+.row > button:not(:last-of-type) {
 	margin-right: 6px;
 }
 
@@ -120,7 +257,8 @@ main {
 
 main,
 .keyboard,
-.key {
+.key,
+.tile {
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
